@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: gooServer
+
+server:
+  port: 9001
+
+app:
+  version: 0.1.0
