@@ -5,17 +5,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import lombok.AllArgsConstructor;
+import org.gooserver.monitoring.RequestMetrics;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
+@AllArgsConstructor
 public class RequestLoggingFilter extends OncePerRequestFilter {
 
     private final LogFileService logFileService;
-
-    public RequestLoggingFilter(LogFileService logFileService) {
-        this.logFileService = logFileService;
-    }
+    private final RequestMetrics requestMetrics;
 
     @Override
     protected void doFilterInternal(
@@ -33,11 +33,13 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
         } catch (Exception ex) {
             status = 500;
             logFileService.writeLine(buildLogLine(request, status, System.currentTimeMillis() - start, ex));
+            requestMetrics.recordRequest(System.currentTimeMillis() - start, status, ex);
             throw ex;
         }
 
         long durationMs = System.currentTimeMillis() - start;
         logFileService.writeLine(buildLogLine(request, status, durationMs, null));
+        requestMetrics.recordRequest(durationMs, status, null);
     }
 
     private String buildLogLine(HttpServletRequest request, int status, long durationMs, Exception ex) {
