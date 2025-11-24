@@ -71,6 +71,36 @@ else
   echo "[INFO] config/application.yml 파일을 발견했습니다."
 fi
 
+find_existing_process() {
+  local pid=""
+
+  # pgrep 이 있으면 우선 사용
+  if command -v pgrep >/dev/null 2>&1; then
+    # java 프로세스 중에서 APP_JAR 경로를 커맨드라인에 포함하는 프로세스 찾기
+    pid=$(pgrep -f "java .*${APP_JAR}")
+  else
+    # pgrep 이 없으면 ps + grep 조합
+    # grep 자기 자신은 제외
+    pid=$(ps aux | grep "java" | grep "$APP_JAR" | grep -v "grep" | awk '{print $2}' | head -n 1)
+  fi
+
+  echo "$pid"
+}
+
+EXISTING_PID="$(find_existing_process)"
+
+if [ -n "$EXISTING_PID" ]; then
+  echo "[ERROR] 이미 이 애플리케이션이 실행 중입니다."
+  echo " - PID: $EXISTING_PID"
+  echo " - 중복 실행을 방지하기 위해 새 인스턴스를 시작하지 않습니다."
+  echo ""
+  echo "프로세스를 종료하려면 예를 들어 다음과 같이 실행할 수 있습니다:"
+  echo "  kill $EXISTING_PID"
+  echo "또는 활동 모니터에서 해당 Java 프로세스를 종료해 주세요."
+  read -n 1 -s -r -p "계속하려면 아무 키나 누르세요..."
+  exit 1
+fi
+
 # 포트 결정 로직 (config → 기본값)
 BASE_PORT=9001
 MAX_PORT=9999
