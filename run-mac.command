@@ -6,6 +6,8 @@ chmod +x "$0"
 # 스크립트 기준 절대 경로 계산
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+cd "$BASE_DIR"
+
 APP_JAR="$BASE_DIR/server/app.jar"
 CONFIG_FILE="$BASE_DIR/config/application.yml"
 LOG_DIR="$BASE_DIR/logs"
