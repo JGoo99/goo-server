@@ -1,4 +1,0 @@
-[2025-11-24T20:01:40.472203+09:00] method=GET path=/config status=200 durationMs=54 clientIp=0:0:0:0:0:0:0:1 userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
-[2025-11-24T20:01:47.41639+09:00] method=GET path=/config status=200 durationMs=14 clientIp=0:0:0:0:0:0:0:1 userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
-[2025-11-24T20:02:23.556275+09:00] method=GET path=/health status=200 durationMs=20 clientIp=0:0:0:0:0:0:0:1 userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
-[2025-11-24T20:03:31.153732+09:00] method=GET path=/config status=200 durationMs=9 clientIp=0:0:0:0:0:0:0:1 userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
