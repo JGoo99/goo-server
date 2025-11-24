@@ -1,5 +1,6 @@
 package org.gooserver.logging;
 
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -47,5 +48,31 @@ public class LogFileService {
         } catch (IOException e) {
             log.warn("Failed to write log file: {}", e.getMessage());
         }
+    }
+
+    public List<String> readRecentLines(int lines) throws IOException {
+        if (lines <= 0) {
+            return List.of();
+        }
+
+        Path logDir = Paths.get(LOG_DIR);
+        if (!Files.exists(logDir)) {
+            return List.of();
+        }
+
+        String today = LocalDate.now().format(DATE_FORMAT);
+        String fileName = LOG_FILE_PREFIX + today + LOG_FILE_SUFFIX;
+        Path logFile = logDir.resolve(fileName);
+
+        if (!Files.exists(logFile)) {
+            return List.of();
+        }
+
+        var allLines = Files.readAllLines(logFile, StandardCharsets.UTF_8);
+        int size = allLines.size();
+        if (size <= lines) {
+            return allLines;
+        }
+        return allLines.subList(size - lines, size);
     }
 }
